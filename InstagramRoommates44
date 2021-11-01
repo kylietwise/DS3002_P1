@@ -1,0 +1,101 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Oct 27 11:45:15 2021
+
+@author: kyliewise
+"""
+
+# https://www.geeksforgeeks.org/getting-instagram-profile-details-using-python/
+
+# importing libraries
+from bs4 import BeautifulSoup
+import requests
+import pandas as pd 
+ 
+# instagram URL
+URL = "https://www.instagram.com/{}/"
+ 
+# parse function
+def parse_data(s):
+     
+    # creating a dictionary
+    data = {}
+     
+    # splitting the content
+    # then taking the first part
+    s = s.split("-")[0]
+     
+    # again splitting the content
+    s = s.split(" ")
+     
+    # assigning the values
+    data['Followers'] = s[0]
+    data['Following'] = s[2]
+    data['Posts'] = s[4]
+     
+    # returning the dictionary
+    return data
+ 
+# scrape function
+def scrape_data(username):
+     
+    # getting the request from url
+    r = requests.get(URL.format(username))
+     
+    # converting the text
+    s = BeautifulSoup(r.text, "html.parser")
+     
+    # finding meta info
+    meta = s.find("meta", property ="og:description")
+     
+    # calling parse method
+    return parse_data(meta.attrs['content'])
+
+
+# make data frame for our house
+
+data44 = []
+
+# put in desired usernames
+
+username = ["kylie_wise","iris_martin","spicy_pants_","jackie_hart11","alexlacour","clare13scully","savannahw9","agathehillenmeyer"]
+
+
+for i in username:
+        
+    if __name__=="__main__":   
+         
+        # calling scrape function
+        data = scrape_data(i)
+            
+        data44.append(data)
+
+# convert from list of dictionaries to pandas DataFrame
+
+final = pd.DataFrame.from_dict(data44, orient='columns')
+
+# add column with user information
+
+final['username'] = username
+
+# re-order so username comes first
+final = final[['username', 'Followers', 'Following', 'Posts']]
+
+# make posts column numeric 
+final['Posts'] = pd.to_numeric(final['Posts'])
+
+# add a rank category of highest posters 
+
+final['Share_Score'] = final['Posts'].rank(method='max')
+
+# export final to csv
+
+# uncomment last line to export to disk as csv
+# final.to_csv('DS3002P1.csv')
+
+    
+    
+    
+
+    
