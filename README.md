@@ -1,6 +1,7 @@
 # DS3002_P1
 
 InstagramRoommates44 = Code
+
 DS3002P1.csv = Final exported csv
 
 For this project I used the instagram API to gather basic user information about my roommates and me. Once I got this information I added a column based on how many posts each person was sharing and then converted the data into a dataframe. Finally, I exported the dataframe as a CSV to my disk. 
