@@ -1,6 +1,6 @@
 # DS3002_P1
 
-InstagramRoommates44 = Code
+InstagramRoommates44 = Python Code
 
 DS3002P1.csv = Final exported csv
 
